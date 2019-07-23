@@ -55,22 +55,33 @@ const runners = [{"id":1,"first_name":"Charmain","last_name":"Seiler","email":"c
 
 // ==== Challenge 1: Use .forEach() ====
 // The event director needs both the first and last names of each runner for their running bibs.  Combine both the first and last names into a new array called fullName. 
-let fullName = [];
+
+function returnName(){
+    let getFullName = [];
+    runners.forEach(function(item, index){
+        getFullName.push(runners[index].first_name + " " + runners[index].last_name);
+    });
+
+    return getFullName;
+}
+let fullName = returnName();
 console.log(fullName);
 
 // ==== Challenge 2: Use .map() ====
 // The event director needs to have all the runner's first names converted to uppercase because the director BECAME DRUNK WITH POWER. Convert each first name into all caps and log the result
-let allCaps = [];
-console.log(allCaps); 
+
+let firstNameUpper = runners.map ( currentValue => currentValue.first_name.toUpperCase());
+console.log(firstNameUpper);
 
 // ==== Challenge 3: Use .filter() ====
 // The large shirts won't be available for the event due to an ordering issue.  Get a list of runners with large sized shirts so they can choose a different size. Return an array named largeShirts that contains information about the runners that have a shirt size of L and log the result
-let largeShirts = [];
+let largeShirts = runners.filter( currentValue => currentValue.shirt_size === "L");
 console.log(largeShirts);
 
 // ==== Challenge 4: Use .reduce() ====
 // The donations need to be tallied up and reported for tax purposes. Add up all the donations into a ticketPriceTotal array and log the result
-let ticketPriceTotal = [];
+let initialValue = 0;
+let ticketPriceTotal = runners.reduce( (total, currentValue) => total + currentValue.donation, initialValue );
 console.log(ticketPriceTotal);
 
 // ==== Challenge 5: Be Creative ====
@@ -78,6 +89,34 @@ console.log(ticketPriceTotal);
 
 // Problem 1
 
+//The event director has decided to be incredibly greedy and now wants a list of runners who donated less than $100 so that he can notify them that, should they not match a $100 donation, they'll be kicked out of the event!
+
+let cheapSkates = runners.filter ( currentValue => currentValue.donation < 100);
+console.log(cheapSkates); //shame on you cheapskates!
+
 // Problem 2
 
+//After being notified of the $100 minimum requirement, only Bertie Lonergan, Malachi Okeshott and Marielle Kimmel decided to comply. Modify the donations of each of these participants to exactly $100. Afterwards, create a new array of runners based on everyone who donated at least $100, thusly removing the rest of the "cheapskates". Finally, print the entire array.
+
+
+runners.map( function(currentValue){
+    if (currentValue.first_name === "Bertie" & currentValue.last_name === "Lonergan"){
+        currentValue.donation = 100;
+    }else if (currentValue.first_name === "Malachi" & currentValue.last_name === "Okeshott"){
+        currentValue.donation = 100;
+    }else if (currentValue.first_name === "Marielle" & currentValue.last_name === "Kimmel"){
+        currentValue.donation = 100;
+    }else{/*do nothing*/}
+});
+
+let newRunners = runners.filter ( currentValue => currentValue.donation >= 100);
+console.log(newRunners);
+
 // Problem 3
+
+//The CFO has caught wind of the event director's scheme and has decided that they will keep the event director in charge as long as the scheme ultimately yielded more total donations than before. Use reduce and compare the donation results with the result from challenge 4 to see if the event director was fired or not!
+
+initialValue = 0;
+let newTicketPriceTotal = newRunners.reduce( (total, currentValue) => total + currentValue.donation, initialValue );
+let wasFired = (oldTotal,newTotal) => (oldTotal >= newTotal) ? "FIRED!":"Not Fired!"; 
+console.log(wasFired(ticketPriceTotal,newTicketPriceTotal));
